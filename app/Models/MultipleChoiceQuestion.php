@@ -40,7 +40,6 @@ class MultipleChoiceQuestion extends Model
         'updated_at'
     ];
 
-    // ارتباط با کتاب
     public function book()
     {
         return $this->belongsTo(Textbook::class);
@@ -51,6 +50,7 @@ class MultipleChoiceQuestion extends Model
     {
         return $this->belongsTo(Topic::class);
     }
+
 
 
 

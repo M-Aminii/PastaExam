@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::post('/test/{id}',[ExamController::class ,'show']);
+
 
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login', [AccessTokenController::class ,'login']);
@@ -30,6 +32,9 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(["middleware" => ["auth:api"],'prefix' => 'exam'], function () {
 
     Route::post('/addExam',[ExamController::class ,'create']);
+    Route::post('/addTest',[ExamController::class ,'addQuestionsToExam']);
+    Route::get('/showExam', [ExamController::class, 'showExamDetails'])->name('ShowExam');
+
 
 
 });

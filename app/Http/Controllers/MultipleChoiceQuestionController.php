@@ -6,6 +6,7 @@ use App\DTO\QuestionDTO;
 use App\Http\Requests\MultipleChoiceQuestion\CreateQuestionRequest;
 use App\Models\Exam;
 use App\Models\MultipleChoiceQuestion;
+use App\Services\MultipleChoiceQuestionService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -37,25 +38,11 @@ class MultipleChoiceQuestionController extends Controller
         $questions = MultipleChoiceQuestion::with(['book', 'topic'])
             ->where('textbook_id', $request->input('textbook_id', 1))
             ->where('topic_id', $request->input('topic_id', 1))
+            ->where('difficulty_level', $request->input('difficulty_level', 'medium'))
             ->inRandomOrder()
             ->get();
 
-        $randomizedQuestions = [];
-        foreach ($questions as $question) {
-            $options = [
-                $question->option1,
-                $question->option2,
-                $question->option3,
-                $question->option4,
-            ];
-            shuffle($options);
-            $correct_option_index = array_search($question->correct_option, $options);
-            $randomizedQuestions[] = [
-                'question_text' => $question->question_text,
-                'options' => $options,
-                'correct_option' => $correct_option_index + 1,
-            ];
-        }
+        $randomizedQuestions = MultipleChoiceQuestionService::getRandomQuestions($questions);
 
         return response()->json($randomizedQuestions);
 
