@@ -20,8 +20,8 @@ class MultipleChoiceQuestionService
             shuffle($options);
             $correct_option_index = array_search($question->correct_option, $options);
             $randomizedQuestions[] = [
-                'question_id' => $question->id,
-                'difficulty_level' => $question->difficulty_level,
+                //'question_id' => $question->id,
+               // 'difficulty_level' => $question->difficulty_level,
                 'question_text' => $question->question_text,
                 'options' => $options,
                 'correct_option' => $correct_option_index + 1,

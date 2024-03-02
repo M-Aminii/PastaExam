@@ -34,6 +34,7 @@ Route::group(["middleware" => ["auth:api"],'prefix' => 'exam'], function () {
     Route::post('/addExam',[ExamController::class ,'create']);
     Route::post('/addTest',[ExamController::class ,'addQuestionsToExam']);
     Route::get('/showExam', [ExamController::class, 'showExamDetails'])->name('ShowExam');
+    Route::post('/WordDocument', [ExamController::class, 'generateWordDocument']);
 
 
 
