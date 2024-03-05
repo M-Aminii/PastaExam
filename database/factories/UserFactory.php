@@ -17,6 +17,8 @@ class UserFactory extends Factory
             'mobile' => '+989'.$this->faker->randomNumber(4) . $this->faker->randomNumber(5),
             'email'=>$this->faker->unique()->safeEmail,
             'name'=>$this->faker->name,
+            'lastName'=>$this->faker->lastName,
+            'username'=>$this->faker->userName,
             'password'=> '$2y$10$yHOVJzIYR5NRsj1JVFrKIuJ8X4JZHlW7Y7QAgRPpnd4MEp9uglwHK', // 123456
             'avatar'=> null,
         ];

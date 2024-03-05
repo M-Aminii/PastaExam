@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccessTokenController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\MultipleChoiceQuestionController;
 use Illuminate\Http\Request;
@@ -16,6 +17,11 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::post('register',[AuthController::class ,'register']);
+Route::post('register-verify',[AuthController::class ,'registerVerify']);
+Route::post('resend-verification-code',[AuthController::class ,'resendVerificationCodeToUser']);
+
 Route::post('/test/{id}',[ExamController::class ,'show']);
 
 

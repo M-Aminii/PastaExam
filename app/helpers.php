@@ -27,3 +27,13 @@ if (!function_exists('decryptId')) {
         return $decryptedId;
     }
 }
+if (!function_exists('random_verification_code')) {
+
+    /**
+     * @throws \Random\RandomException
+     */
+    function random_verification_code(): int
+    {
+        return random_int(100000, 999999);
+    }
+}
