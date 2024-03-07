@@ -28,7 +28,7 @@ class FieldsTableSeeder extends Seeder
 
         foreach ($fields as $field) {
             Field::create($field);
-            $this->command->info('add ' . $field['name'] . ' grade_levels');
+            $this->command->info('add Field to database');
         }
     }
 }

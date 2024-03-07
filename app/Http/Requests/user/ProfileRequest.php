@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests\user;
 
+use App\Rules\EmailRule;
+use App\Rules\MobileRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class TeacherInfoRequest extends FormRequest
+class ProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +24,8 @@ class TeacherInfoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['nullable', 'string', 'email', 'max:100', 'unique:users,email'],
+
+            'role' => ['required', 'string', 'in:teacher,student'],
             'username' => ['nullable', 'string', 'max:100', 'unique:users,username'],
             'name' => ['required', 'string', 'max:100'],
             'lastname' => ['required', 'string', 'max:100'],
@@ -32,9 +35,6 @@ class TeacherInfoRequest extends FormRequest
             'grade_level_id' => ['nullable', 'integer', 'exists:grade_levels,id'],
             'province_id' => ['nullable', 'integer', 'exists:provinces,id'],
             'city_id' => ['nullable', 'integer', 'exists:cities,id'],
-            'school_id' => ['nullable', 'integer', 'exists:schools,id'],
-            'education' => ['nullable', 'string', 'max:100'],
-            'education_certificate' => ['nullable', 'image', 'max:1024'],
             //'password' => ['nullable', 'string', 'min:8', 'max:100', 'confirmed'],
             'avatar' => ['nullable', 'image', 'max:1024'],
             'about_me' => ['nullable', 'string','max:255']

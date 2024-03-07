@@ -25,7 +25,7 @@ class GradeLevelsTableSeeder extends Seeder
             GradeLevel::create([
                 'name' => $gradelevel,
             ]);
-            $this->command->info('add ' . $gradelevel . ' grade_levels');
+            $this->command->info('add grade_levels to database');
         }
     }
 }

@@ -23,7 +23,7 @@ class TopicsTableSeedr extends Seeder
 
         foreach ($Topics as $Topic) {
             Topic::create($Topic);
-            $this->command->info('add ' . $Topic['name']);
+            $this->command->info('add Topic to database');
         }
     }
 }

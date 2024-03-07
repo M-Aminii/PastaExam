@@ -4,6 +4,7 @@ use App\Http\Controllers\AccessTokenController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\MultipleChoiceQuestionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +23,6 @@ Route::post('register',[AuthController::class ,'register']);
 Route::post('register-verify',[AuthController::class ,'registerVerify']);
 Route::post('resend-verification-code',[AuthController::class ,'resendVerificationCodeToUser']);
 
-Route::post('/test/{id}',[ExamController::class ,'show']);
 
 
 Route::group(['prefix' => 'auth'], function () {
@@ -32,6 +32,22 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('me', [AccessTokenController::class ,'me']);
 });
 
+
+/**
+ * روت های کاربر
+ */
+Route::group(["middleware" => ["auth:api"]],function (){
+
+
+    Route::group(['prefix' => 'user'], function () {
+
+        Route::put('/info',[UserController::class ,'info']);
+        Route::patch('/profile',[UserController::class ,'profile']);
+
+    });
+
+});
+
 /**
  * روت های سربرگ آزمون
  */
@@ -39,7 +55,7 @@ Route::group(["middleware" => ["auth:api"],'prefix' => 'exam'], function () {
 
     Route::post('/addExam',[ExamController::class ,'create']);
     Route::post('/addTest',[ExamController::class ,'addQuestionsToExam']);
-    Route::get('/showExam', [ExamController::class, 'showExamDetails'])->name('ShowExam');
+    Route::get('/showExam', [ExamController::class, 'showExamDetails']);
     Route::post('/WordDocument', [ExamController::class, 'generateWordDocument']);
 
 

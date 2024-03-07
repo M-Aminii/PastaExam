@@ -22,9 +22,9 @@ class infoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=> 'required|string',
-            'lastname'=> 'required|string',
-            'gender'=> 'required|string',
+            'name'=> ['required','string'],
+            'lastname'=> ['required','string'],
+            'gender'=> ['required','string'],
         ];
     }
 }

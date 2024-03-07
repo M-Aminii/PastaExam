@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\DTO\UserDTO;
 use App\Http\Requests\user\ChoiceRoleRequest;
 use App\Http\Requests\user\infoRequest;
-use App\Http\Requests\user\TeacherInfoRequest;
+use App\Http\Requests\user\ProfileRequest;
 use App\Services\UpdateUserService;
 use Exception;
 use Illuminate\Http\Request;
@@ -14,20 +14,6 @@ use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
-    public function choiceRole(ChoiceRoleRequest $request)
-    {
-        try {
-            $user = auth()->user();
-            $user->role = $request->role;
-            $user->save();
-            return response(['message' => 'نقش مورد نظر انتخاب شد'], 200);
-
-        }catch (Exception $exception) {
-            Log::error($exception);
-            return response(['message' => 'خطایی به وجود آمده است'], 500);
-        }
-
-    }
 
     public function info(infoRequest $request)
     {
@@ -37,10 +23,9 @@ class UserController extends Controller
             $user->name = $request->name;
             $user->lastname = $request->lastname;
             $user->gender = $request->gender;
-            $user->save();
+            $user->update();
             DB::commit();
-
-            return response(['message' => 'مشخصات فردی بروزرسانی شد'], 200);
+            return response(['message' => 'مشخصات فردی ثبت شد'], 200);
         }catch (Exception $exception) {
             DB::rollBack();
             Log::error($exception);
@@ -49,26 +34,8 @@ class UserController extends Controller
 
     }
 
-    public function studentInfo(StudentInfoRequest $request)
-    {
-        try {
-            DB::beginTransaction();
-            $user = auth()->user();
 
-
-            $user->save();
-            DB::commit();
-
-            return response(['message' => 'مشخصات فردی بروزرسانی شد'], 200);
-        }catch (Exception $exception) {
-            DB::rollBack();
-            Log::error($exception);
-            return response(['message' => 'خطایی به وجود آمده است'], 500);
-        }
-
-    }
-
-    public function teacherInfo(TeacherInfoRequest $request)
+    public function profile(ProfileRequest $request)
     {
         try {
             DB::beginTransaction();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Rules\EmailRule;
 use App\Rules\MobileRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -28,7 +29,7 @@ class ResendVerificationCodeRequest extends FormRequest
     {
         return [
             'mobile' => ['required_without:email', new MobileRule],
-            'email' => 'required_without:mobile|email',
+            'email' => ['required_without:mobile', 'string', 'email', 'max:100', 'unique:users,email' ,new EmailRule],
         ];
     }
 }

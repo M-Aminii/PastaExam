@@ -25,7 +25,7 @@ class AuthController extends Controller
 
 
         $code = random_verification_code();
-        $expiration = config('auth.register_cache_expiration', 2);
+        $expiration = config('auth.register_cache_expiration', 200000000);
         Cache::put('user-auth-register-' . $value, compact('code', 'field'),now()->addMinutes($expiration));
 
         //TODO: ارسال ایمیل یا پیامک به کاربر
@@ -51,6 +51,7 @@ class AuthController extends Controller
             if ($registerData){
                 $Uesr =User::where($registerData['field'], $value)->first();
                 if ($Uesr) {
+                    //TODO: برطرف کردن مشکل پیغام
                     throw new UserAlreadyRegisteredException('شما قبلا ثبت نام کرده اید');
                 }
                 if ($registerData && $registerData['code'] == $code){

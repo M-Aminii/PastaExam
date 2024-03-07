@@ -21,17 +21,13 @@ return new class extends Migration
             $table->string('lastName', 100)->nullable();
             $table->enum('gender', User::GENDERS)->default(User::GENDER_MAN);
             $table->date('birthdate')->nullable();
-            $table->string('national_code', 10)->unique()->nullable();
+            //$table->string('national_code', 10)->unique()->nullable();
             $table->unsignedBigInteger('grade_level_id')->nullable();
             $table->unsignedBigInteger('province_id')->nullable();
             $table->unsignedBigInteger('city_id')->nullable();
-            $table->unsignedBigInteger('school_id')->nullable();
-            $table->string('education', 100)->nullable();
-            $table->string('education_certificate')->nullable();
             $table->string('password', 100)->nullable();
             $table->enum('role', User::ROLES)->default(User::ROLE_STUDENT);
             $table->string('avatar', 100)->nullable();
-            $table->text('about_me')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 
@@ -48,11 +44,6 @@ return new class extends Migration
             $table->foreign('city_id')
                 ->references('id')
                 ->on('cities')
-                ->onDelete('cascade');
-
-            $table->foreign('school_id')
-                ->references('id')
-                ->on('schools')
                 ->onDelete('cascade');
 
         });

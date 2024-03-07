@@ -23,7 +23,7 @@ class TextBooksTableSeedr extends Seeder
 
         foreach ($Textbooks as $Textbook) {
             Textbook::create($Textbook);
-            $this->command->info('add ' . $Textbook['name']);
+            $this->command->info('add Textbook to database');
         }
     }
 }
