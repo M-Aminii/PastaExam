@@ -18,8 +18,31 @@ class User extends Authenticatable implements JWTSubject
     const ROLE_STUDENT = 'student';
     const ROLES = [self::ROLE_TEACHER, self::ROLE_STUDENT];
 
+    const GENDER_MAN = 'man';
+    const GENDER_WOMAN = 'Woman';
+    const GENDERS = [self::GENDER_MAN, self::GENDER_WOMAN];
+
     protected $fillable = [
-        'mobile', 'email', 'name', 'password','role', 'avatar', 'created_at', 'updated_at'
+        'mobile',
+        'email',
+        'username',
+        'name',
+        'family',
+        'gender',
+        'birthdate',
+        'national_code',
+        'grade_level_id',
+        'province_id',
+        'city_id',
+        'school_id',
+        'education',
+        'education_certificate',
+        'password',
+        'role',
+        'avatar',
+        'about_me',
+        'created_at',
+        'updated_at'
     ];
 
     /**
@@ -57,5 +80,26 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Exam::class);
     }
+
+    public function gradeLevel()
+    {
+        return $this->belongsTo(GradeLevel::class);
+    }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(cities::class);
+    }
+
+    public function school()
+    {
+        return $this->belongsTo(School::class);
+    }
+
 
 }
