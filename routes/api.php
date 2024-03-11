@@ -38,6 +38,8 @@ Route::group(['prefix' => 'auth'], function () {
  */
 Route::group(["middleware" => ["auth:api"]],function (){
 
+    Route::put('change-password',[UserController::class ,'changePassword']);
+
 
     Route::group(['prefix' => 'user'], function () {
 
@@ -57,6 +59,8 @@ Route::group(["middleware" => ["auth:api"],'prefix' => 'exam'], function () {
     Route::post('/addTest',[ExamController::class ,'addQuestionsToExam']);
     Route::get('/showExam', [ExamController::class, 'showExamDetails']);
     Route::post('/WordDocument', [ExamController::class, 'generateWordDocument']);
+
+    Route::put('change-password',[UserController::class ,'changePassword']);
 
 
 

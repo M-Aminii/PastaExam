@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\user;
 
+use App\Rules\PasswordRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class infoRequest extends FormRequest
@@ -25,6 +26,8 @@ class infoRequest extends FormRequest
             'name'=> ['required','string'],
             'lastname'=> ['required','string'],
             'gender'=> ['required','string'],
+            'password' => ['required', new PasswordRule],
+            'password_confirmation' => ['required'],
         ];
     }
 }

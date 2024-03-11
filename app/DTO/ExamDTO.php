@@ -10,7 +10,7 @@ class ExamDTO
     public $field_id;
     public $textbook_id;
     public $topic_id;
-    public $region_id;
+    public $province_id;
     public $city_id;
     public $school_id;
     public $title;
@@ -32,7 +32,7 @@ class ExamDTO
         $this->field_id = $data['field_id'];
         $this->textbook_id = $data['textbook_id'];
         $this->topic_id = $data['topic_id'];
-        $this->region_id =$data['region_id'];
+        $this->province_id =$data['province_id'];
         $this->city_id = $data['city_id'];
         $this->school_id = $data['school_id'];
         $this->title = $data['title'];

@@ -29,7 +29,7 @@ class CreateExamRequest extends FormRequest
             'field_id' => 'integer',
             'textbook_id' => 'required|integer',
             'topic_id' => 'required|integer',
-            'region_id' => 'nullable|integer',
+            'province_id' => 'nullable|integer',
             'city_id' => 'nullable|integer',
             'school_id' => 'nullable|integer',
             'negative_mark'=>'nullable|integer',
