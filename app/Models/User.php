@@ -93,7 +93,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function city()
     {
-        return $this->belongsTo(cities::class);
+        return $this->belongsTo(Cities::class);
     }
 
     public function school()

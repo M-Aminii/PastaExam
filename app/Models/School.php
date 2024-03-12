@@ -13,6 +13,6 @@ class School extends Model
 
     public function city()
     {
-        return $this->belongsTo(cities::class);
+        return $this->belongsTo(Cities::class);
     }
 }
