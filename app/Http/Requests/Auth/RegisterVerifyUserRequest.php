@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use App\Rules\MobileRule;
+use App\Rules\PasswordRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterVerifyUserRequest extends FormRequest
@@ -30,6 +31,11 @@ class RegisterVerifyUserRequest extends FormRequest
             'code' => 'required|string',
             'mobile' => ['required_without:email', new MobileRule],
             'email' => 'required_without:mobile|email',
+            'name'=> ['required','string'],
+            'family'=> ['required','string'],
+            'password' => ['required', new PasswordRule],
+            'password_confirmation' => ['required'],
+
         ];
     }
 }

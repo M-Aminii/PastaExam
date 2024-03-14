@@ -43,7 +43,6 @@ Route::group(["middleware" => ["auth:api"]],function (){
 
     Route::group(['prefix' => 'user'], function () {
 
-        Route::put('/info',[UserController::class ,'info']);
         Route::post('/profile',[UserController::class ,'profile']);
 
     });

@@ -45,6 +45,10 @@ class AuthController extends Controller
             DB::beginTransaction();
             $value = $request->getFieldValue();
             $code = $request->code;
+            $name =$request->name;
+            $family =$request->family;
+            $password = $request->password;
+            $passwordConfirmation = $request->password_confirmation;
 
             $registerData = Cache::get('user-auth-register-' . $value);
 
@@ -55,9 +59,17 @@ class AuthController extends Controller
                     throw new UserAlreadyRegisteredException('شما قبلا ثبت نام کرده اید');
                 }
                 if ($registerData && $registerData['code'] == $code){
+                    // بررسی معتبر بودن رمز عبور و تکرار آن
+                    if ($password !== $passwordConfirmation) {
+                        DB::rollBack();
+                        return response(['message' => 'رمز عبور و تکرار آن باید یکسان باشند'], 400);
+                    }
                     $user = User::create([
                         'email' => $registerData['field'] == 'email' ? $value : null,
                         'mobile' =>$registerData['field'] == 'mobile' ? $value : null,
+                        'name'=>$name,
+                        'family'=>$family,
+                        'password'=> bcrypt($password),
                     ]);
                     DB::commit();
                     return response([

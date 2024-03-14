@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Log;
 class UserController extends Controller
 {
 
-    public function info(infoRequest $request)
+        /*    public function info(infoRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -43,7 +43,7 @@ class UserController extends Controller
             return response(['message' => 'خطایی به وجود آمده است'], 500);
         }
 
-    }
+    }*/
 
 
     public function profile(ProfileRequest $request)
