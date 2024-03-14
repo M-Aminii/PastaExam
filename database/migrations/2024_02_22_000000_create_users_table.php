@@ -18,16 +18,16 @@ return new class extends Migration
             $table->string('email', 100)->unique()->nullable();
             $table->string('username', 100)->unique()->nullable();
             $table->string('name', 100)->nullable();
-            $table->string('lastName', 100)->nullable();
+            $table->string('family', 100)->nullable();
             $table->enum('gender', User::GENDERS)->default(User::GENDER_MAN);
             $table->date('birthdate')->nullable();
-            //$table->string('national_code', 10)->unique()->nullable();
             $table->unsignedBigInteger('grade_level_id')->nullable();
             $table->unsignedBigInteger('province_id')->nullable();
             $table->unsignedBigInteger('city_id')->nullable();
             $table->string('password', 100)->nullable();
             $table->enum('role', User::ROLES)->default(User::ROLE_STUDENT);
             $table->string('avatar', 100)->nullable();
+            $table->string('about_me', 250)->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 

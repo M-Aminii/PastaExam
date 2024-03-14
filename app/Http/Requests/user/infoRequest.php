@@ -24,7 +24,7 @@ class infoRequest extends FormRequest
     {
         return [
             'name'=> ['required','string'],
-            'lastname'=> ['required','string'],
+            'family'=> ['required','string'],
             'gender'=> ['required','string'],
             'password' => ['required', new PasswordRule],
             'password_confirmation' => ['required'],

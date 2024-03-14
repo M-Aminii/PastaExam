@@ -28,14 +28,13 @@ class ProfileRequest extends FormRequest
             'role' => ['required', 'string', 'in:teacher,student'],
             'username' => ['nullable', 'string', 'max:100', 'unique:users,username'],
             'name' => ['required', 'string', 'max:100'],
-            'lastname' => ['required', 'string', 'max:100'],
+            'family' => ['required', 'string', 'max:100'],
             'gender' => ['required', 'string', 'in:man,woman'],
             'birthdate' => ['nullable', 'date'],
             //'national_code' => ['nullable', 'string', 'digits:10', 'unique:users,national_code'],
             'grade_level_id' => ['nullable', 'integer', 'exists:grade_levels,id'],
             'province_id' => ['nullable', 'integer', 'exists:provinces,id'],
             'city_id' => ['nullable', 'integer', 'exists:cities,id'],
-            //'password' => ['nullable', 'string', 'min:8', 'max:100', 'confirmed'],
             'avatar' => ['nullable', 'image', 'max:1024'],
             'about_me' => ['nullable', 'string','max:255']
         ];

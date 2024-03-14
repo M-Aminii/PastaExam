@@ -44,7 +44,7 @@ class MultipleChoiceQuestionController extends Controller
 
         $randomizedQuestions = MultipleChoiceQuestionService::getRandomQuestions($questions);
 
-        return response()->json($randomizedQuestions);
+        return response()->json($randomizedQuestions,);
 
     }
 

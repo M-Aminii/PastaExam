@@ -24,7 +24,7 @@ class UserController extends Controller
             DB::beginTransaction();
             $user = auth()->user();
             $user->name = $request->name;
-            $user->lastname = $request->lastname;
+            $user->family = $request->family;
             $user->gender = $request->gender;
             $user->save();
             // فراخوانی متد setPassword از سرویس PasswordService
@@ -65,7 +65,6 @@ class UserController extends Controller
     {
         try {
             $user = auth()->user();
-
             if (!Hash::check($request->old_password, $user->password)) {
                 return response(['message' => 'گذر واژه وارد شده مطابقت ندارد'], 400);
             }
