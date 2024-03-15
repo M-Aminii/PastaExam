@@ -24,7 +24,7 @@ class CityTableSeeder extends Seeder
                 'name' =>$row[1],
                 'province_id' => $row[2],
             ]);
-           $this->command->info('add city to database');
+           //$this->command->info('add city to database');
         }
     }
 }

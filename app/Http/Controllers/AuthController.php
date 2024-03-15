@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\InvalidVerificationCodeException;
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\PasswordMismatchException;
 use App\Exceptions\UserAlreadyRegisteredException;
 use App\Http\Requests\Auth\RegisterNewUserRequest;
 use App\Http\Requests\Auth\RegisterVerifyUserRequest;
@@ -23,8 +25,15 @@ class AuthController extends Controller
         $field = $request->getFieldName();
         $value = $request->getFieldValue();
 
+        $Uesr =User::where($field, $value)->first();
+        if ($Uesr) {
+            //TODO: برطرف کردن مشکل پیغام
+            return response(['message' => 'شما قبلا ثبت نام کرده اید'], 400);
+        }
 
-        $code = random_verification_code();
+        $code =123456;
+            //random_verification_code();
+
         $expiration = config('auth.register_cache_expiration', 200000000);
         Cache::put('user-auth-register-' . $value, compact('code', 'field'),now()->addMinutes($expiration));
 
@@ -58,11 +67,15 @@ class AuthController extends Controller
                     //TODO: برطرف کردن مشکل پیغام
                     throw new UserAlreadyRegisteredException('شما قبلا ثبت نام کرده اید');
                 }
+                if ($registerData['code'] != $code) {
+                    throw new InvalidVerificationCodeException('کد تایید وارد شده اشتباه است.');
+                }
+
                 if ($registerData && $registerData['code'] == $code){
+
                     // بررسی معتبر بودن رمز عبور و تکرار آن
                     if ($password !== $passwordConfirmation) {
-                        DB::rollBack();
-                        return response(['message' => 'رمز عبور و تکرار آن باید یکسان باشند'], 400);
+                        throw new PasswordMismatchException('رمز عبور و تکرار آن باید یکسان باشند.');
                     }
                     $user = User::create([
                         'email' => $registerData['field'] == 'email' ? $value : null,
@@ -78,9 +91,12 @@ class AuthController extends Controller
                     ], 201);
                 }
             }
-        }catch (Exception $exception){
-            Db::rollBack();
-            throw new UserAlreadyRegisteredException('کد تاییده وارد شده اشتباه می باشد یا زمان ان به انمام رسیده است  ');
+        } catch (InvalidVerificationCodeException | UserAlreadyRegisteredException | PasswordMismatchException $exception) {
+            DB::rollBack();
+            return response(['message' => $exception->getMessage()], 400);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return response(['message' => 'خطایی به وجود آمده است'], 500);
         }
 
 
