@@ -56,7 +56,7 @@ class ExamController extends Controller
         $user=$request->user();
 
         $exam = $user->exams()->with(['questions' => function ($query) {
-            $query->select('question_text', 'option1', 'option2', 'option3', 'option4','correct_option','descriptive_answer');
+            $query->select('question_text', 'option1', 'option2', 'option3', 'option4','correct_option','explanation');
         }])->firstOrFail();
 
         $randomizedQuestions = MultipleChoiceQuestionService::getRandomQuestions($exam->questions);
@@ -77,7 +77,7 @@ class ExamController extends Controller
 
             $user = $request->user();
             $exam = $user->exams()->with(['questions' => function ($query) {
-                $query->select('question_text', 'option1', 'option2', 'option3', 'option4','correct_option','descriptive_answer');
+                $query->select('question_text', 'option1', 'option2', 'option3', 'option4','correct_option','explanation');
             }])->firstOrFail();
 
             $questions = $exam->questions;
@@ -96,7 +96,7 @@ class ExamController extends Controller
                 $templateProcessor->setValue("option_c_${questionNumber}", $options[2]);
                 $templateProcessor->setValue("option_d_${questionNumber}", $options[3]);
                 $templateProcessor->setValue("correct_option_${questionNumber}",$correctOption);
-                $templateProcessor->setValue("descriptive_answer_${questionNumber}", $question['descriptive_answer']);
+                $templateProcessor->setValue("explanation${questionNumber}", $question['explanation']);
             }
 
             $outputPath = public_path('exam_documents/generated_exam.docx');

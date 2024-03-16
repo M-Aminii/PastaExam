@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccessTokenController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DescriptivQuestionController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\MultipleChoiceQuestionController;
 use App\Http\Controllers\UserController;
@@ -70,8 +71,18 @@ Route::group(["middleware" => ["auth:api"],'prefix' => 'exam'], function () {
  */
 Route::group(["middleware" => ["auth:api"],'prefix' => 'question'], function () {
 
-    Route::post('/',[MultipleChoiceQuestionController::class ,'create']);
-    Route::get('/ListTest',[MultipleChoiceQuestionController::class ,'list']);
+    Route::post('/multiple-choice',[MultipleChoiceQuestionController::class ,'create']);
+    Route::get('/ListTest',[MultipleChoiceQuestionController::class ,'listMultipleChoice']);
+
+
+});
+/**
+ * روت های سوالات تشریحی
+ */
+Route::group(["middleware" => ["auth:api"],'prefix' => 'question'], function () {
+
+    Route::post('/descriptive',[DescriptivQuestionController::class ,'create']);
+    Route::get('/ListDescriptive',[DescriptivQuestionController::class ,'ListDescriptive']);
 
 
 });

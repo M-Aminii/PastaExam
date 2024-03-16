@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MultipleChoiceQuestion extends Model
+class DescriptivQuestions extends Model
 {
     use HasFactory;
 
@@ -19,6 +19,11 @@ class MultipleChoiceQuestion extends Model
 
     const Direction = [self::Direction_Right,self::Direction_Left];
 
+    const Short_Answer = 'short';
+    const Full_Answer = 'full';
+
+    const Type = [self::Short_Answer,self::Full_Answer];
+
     protected $fillable = [
         'user_id',
         'grade_level_id',
@@ -27,14 +32,11 @@ class MultipleChoiceQuestion extends Model
         'textbook_id',
         'topic_id',
         'source',
+        'answer_type',
         'direction',
         'difficulty_level',
         'question_text',
-        'option1',
-        'option2',
-        'option3',
-        'option4',
-        'correct_option',
+        'answer',
         'explanation',
         'created_at',
         'updated_at'
@@ -50,10 +52,4 @@ class MultipleChoiceQuestion extends Model
     {
         return $this->belongsTo(Topic::class);
     }
-
-
-
-
-
-
 }

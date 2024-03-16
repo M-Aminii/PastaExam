@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\MultipleChoiceQuestion;
+namespace App\Http\Requests\DescriptivQuestion;
 
 use App\Models\Exam;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateQuestionRequest extends FormRequest
+class CreateDescriptivQuestionRequest extends FormRequest
 {
 
     public function authorize(): bool
@@ -24,14 +24,11 @@ class CreateQuestionRequest extends FormRequest
             'textbook_id'=>'required|exists:textbooks,id',
             'topic_id'=>'required|exists:topics,id',
             'source'=>'nullable|string',
+            'answer_type'=>'required|in:short,full',
             'direction'=>'nullable',
             'difficulty_level'=>'required',
             'question_text' => 'required|string',
-            'option1'=> 'required|string',
-            'option2'=> 'required|string',
-            'option3'=> 'required|string',
-            'option4'=> 'required|string',
-            'correct_option' => 'required|integer|between:1,4',
+            'answer' => 'required|string',
             'explanation'=>'nullable|string',
         ];
     }

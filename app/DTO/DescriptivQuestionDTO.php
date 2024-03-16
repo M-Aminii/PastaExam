@@ -2,7 +2,7 @@
 
 namespace App\DTO;
 
-class QuestionDTO
+class DescriptivQuestionDTO
 {
     public $user_id;
     public $grade_level_id;
@@ -11,14 +11,11 @@ class QuestionDTO
     public $textbook_id;
     public $topic_id;
     public $source;
+    public $answer_type;
     public $direction;
     public $difficulty_level;
     public $question_text;
-    public $option1;
-    public $option2;
-    public $option3;
-    public $option4;
-    public $correct_option;
+    public $answer;
     public $explanation;
 
 
@@ -32,22 +29,15 @@ class QuestionDTO
         $this->textbook_id = $data['textbook_id'];
         $this->topic_id = $data['topic_id'];
         $this->source =$data['source'];
+        $this->answer_type = $data['answer_type'];
         $this->direction = $data['direction'];
         $this->difficulty_level = $data['difficulty_level'];
         $this->question_text = $data['question_text'];
-        $this->option1 = $data['option1'];
-        $this->option2 = $data['option2'];
-        $this->option3 = $data['option3'];
-        $this->option4 = $data['option4'];
-        $this->correct_option = $data['correct_option'];
+        $this->answer = $data['answer'];
         $this->explanation = $data['explanation'];
 
 
 
     }
-    public function convertCorrectOption()
-    {
-        $correctOption = 'option' . $this->correct_option;
-        $this->correct_option = $this->$correctOption;
-    }
+
 }

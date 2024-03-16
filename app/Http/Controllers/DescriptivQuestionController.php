@@ -2,27 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\DescriptivQuestionDTO;
 use App\DTO\QuestionDTO;
-use App\Http\Requests\MultipleChoiceQuestion\CreateQuestionRequest;
+
+use App\Http\Requests\DescriptivQuestion\CreateDescriptivQuestionRequest;
+use App\Models\DescriptivQuestions;
 use App\Models\Exam;
 use App\Models\MultipleChoiceQuestion;
+use App\Services\DescriptiveQuestionService;
 use App\Services\MultipleChoiceQuestionService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class MultipleChoiceQuestionController extends Controller
+class DescriptivQuestionController extends Controller
 {
 
-    public function create(CreateQuestionRequest $request)
+    public function create(CreateDescriptivQuestionRequest $request)
     {
 
         try {
             DB::beginTransaction();
-            $questionDTO = new QuestionDTO($request->validated());
-            $questionDTO->convertCorrectOption();
-            $question = MultipleChoiceQuestion::create((array) $questionDTO);
+            $questionDTO = new DescriptivQuestionDTO($request->validated());
+            $question = DescriptivQuestions::create((array) $questionDTO);
             DB::commit();
             return response()->json(['message' => 'سوال با موفقیت اضافه شد'], 201);
         } catch (Exception $exception) {
@@ -33,16 +36,18 @@ class MultipleChoiceQuestionController extends Controller
     }
 
 
-    public static function listMultipleChoice(Request $request)
+    public static function ListDescriptive(Request $request)
     {
-        $questions = MultipleChoiceQuestion::with(['book', 'topic'])
+
+        $questions = DescriptivQuestions::with(['book', 'topic'])
             ->where('textbook_id', $request->input('textbook_id', 1))
             ->where('topic_id', $request->input('topic_id', 1))
+            ->where('answer_type', $request->input('answer_type'))
             ->where('difficulty_level', $request->input('difficulty_level', 'medium'))
             ->inRandomOrder()
             ->get();
 
-        $randomizedQuestions = MultipleChoiceQuestionService::getRandomQuestions($questions);
+        $randomizedQuestions = DescriptiveQuestionService::getRandomQuestions($questions);
 
         return response()->json($randomizedQuestions,);
 
