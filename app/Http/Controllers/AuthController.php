@@ -9,6 +9,7 @@ use App\Exceptions\UserAlreadyRegisteredException;
 use App\Http\Requests\Auth\RegisterNewUserRequest;
 use App\Http\Requests\Auth\RegisterVerifyUserRequest;
 use App\Http\Requests\Auth\ResendVerificationCodeRequest;
+use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -25,11 +26,11 @@ class AuthController extends Controller
         $field = $request->getFieldName();
         $value = $request->getFieldValue();
 
-        $Uesr =User::where($field, $value)->first();
+        /*$Uesr =User::where($field, $value)->first();
         if ($Uesr) {
-            //TODO: برطرف کردن مشکل پیغام
+
             return response(['message' => 'شما قبلا ثبت نام کرده اید'], 400);
-        }
+        }*/
 
         $code =123456;
             //random_verification_code();
@@ -103,6 +104,54 @@ class AuthController extends Controller
 
     }
 
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $value = $request->getFieldValue();
+            $code = $request->code;
+            $password = $request->password;
+            $passwordConfirmation = $request->password_confirmation;
+
+            $registerData = Cache::get('user-auth-register-' . $value);
+
+            if ($registerData){
+                $uesr = User::where($registerData['field'], $value)->first();
+
+                if (!$uesr) {
+                    throw new UserAlreadyRegisteredException('شما قبلا ثبت نام نکرده اید');
+                }
+
+                if ($registerData['code'] != $code) {
+                    throw new InvalidVerificationCodeException('کد تایید وارد شده اشتباه است.');
+                }
+
+                if ($registerData && $registerData['code'] == $code){
+
+                    // بررسی معتبر بودن رمز عبور و تکرار آن
+                    if ($password !== $passwordConfirmation) {
+                        throw new PasswordMismatchException('رمز عبور و تکرار آن باید یکسان باشند.');
+                    }
+
+                    $uesr->password =bcrypt($password) ;
+                    $uesr->save();
+
+                    DB::commit();
+                    return response([
+                        'message' => 'رمز عبور جدید وارد شد ',
+                    ], 200);
+                }
+            }
+        } catch (InvalidVerificationCodeException |UserAlreadyRegisteredException| PasswordMismatchException $exception) {
+            DB::rollBack();
+            return response(['message' => $exception->getMessage()], 400);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            Log::error($exception);
+            return response(['message' => 'خطایی به وجود آمده است'], 500);
+        }
+    }
+
     public static function resendVerificationCodeToUser(ResendVerificationCodeRequest $request)
     {
         $field = $request->getFieldName();
@@ -112,7 +161,8 @@ class AuthController extends Controller
 
         if (empty($user)) {
 
-            $code = random_int(100000, 999999);
+            $code = 123456;
+                //random_int(100000, 999999);
             $expiration = config('auth.register_cache_expiration', 2);
             Cache::put('user-auth-register-' . $value, compact('code', 'field'),now()->addMinutes($expiration));
 
@@ -126,6 +176,8 @@ class AuthController extends Controller
 
         throw new ModelNotFoundException('کاربری با این مشخصات یافت نشد یا قبلا فعالسازی شده است');
     }
+
+
 
 
 }
