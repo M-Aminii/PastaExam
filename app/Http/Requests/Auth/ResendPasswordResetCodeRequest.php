@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Rules\MobileRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterNewUserRequest extends FormRequest
+class ResendPasswordResetCodeRequest extends FormRequest
 {
     use GetRegisterFieldAndValueTrait;
     /**
