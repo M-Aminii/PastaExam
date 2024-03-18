@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('textbooks', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('grade_id');
             $table->unsignedBigInteger('field_id');
             $table->string('name');
             $table->timestamps();
@@ -20,6 +21,11 @@ return new class extends Migration
             $table->foreign('field_id')
                 ->references('id')
                 ->on('fields')
+                ->onDelete('cascade');
+
+            $table->foreign('grade_id')
+                ->references('id')
+                ->on('grades')
                 ->onDelete('cascade');
 
         });

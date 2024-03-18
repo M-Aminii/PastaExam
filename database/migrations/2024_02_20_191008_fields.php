@@ -21,6 +21,8 @@ return new class extends Migration
                 ->references('id')
                 ->on('grade_levels')
                 ->onDelete('cascade');
+
+
         });
     }
 

@@ -19,8 +19,8 @@ class FieldsTableSeeder extends Seeder
 
         $fields = [
             ['name' => 'همه', 'grade_level_id' => 1],
-            ['name' => 'علوم تجربی', 'grade_level_id' => 3],
             ['name' => 'علوم ریاضی', 'grade_level_id' => 3],
+            ['name' => 'علوم تجربی', 'grade_level_id' => 3],
             ['name' => 'ادبیات و علوم انسانی', 'grade_level_id' => 3],
             ['name' => 'علوم و معارف اسلامی', 'grade_level_id' => 3],
 
