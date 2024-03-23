@@ -12,13 +12,7 @@ class ShowExamRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $user=auth()->id();
-        $Exam = Exam::where('user_id',$user )->firstOrFail();
-
-        if ( $Exam->user_id == $user){
-            return  $Exam->id;
-        }
-
+        return  true;
     }
 
     /**

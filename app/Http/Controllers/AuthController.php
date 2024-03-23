@@ -22,13 +22,15 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
+    //TODO: برسی تمامی اکسپشن ها
+
     public function register(RegisterNewUserRequest $request)
     {
         $field = $request->getFieldName();
         $value = $request->getFieldValue();
 
         if (User::where($field, $value)->first()) {
-            return response(['message' => 'شما قبلا ثبت نام کرده اید'], 400);
+            throw new UserAlreadyRegisteredException('شما قبلا ثبت نام کرده اید',409);
         }
 
         $code =123456;
@@ -61,17 +63,18 @@ class AuthController extends Controller
 
             $registerData = Cache::get('user-auth-register-' . $value);
 
-            if (!$registerData ||$registerData['code'] != $code) {
-                throw new InvalidVerificationCodeException('کد تایید نامعتبر است');
+            if (!$registerData || $registerData['code'] != $code) {
+                throw new InvalidVerificationCodeException('کد تایید نامعتبر است',422);
             }
+
             $Uesr =User::where($registerData['field'], $value)->first();
             if ($Uesr) {
-                throw new UserAlreadyRegisteredException('شما قبلا ثبت نام کرده اید');
+                throw new UserAlreadyRegisteredException('شما قبلا ثبت نام کرده اید',409);
             }
 
                     // بررسی معتبر بودن رمز عبور و تکرار آن
             if ($password !== $passwordConfirmation) {
-                throw new PasswordMismatchException('رمز عبور و تکرار آن باید یکسان باشند.');
+                throw new PasswordMismatchException('رمز عبور و تکرار آن باید یکسان باشند.',422);
             }
 
             $user = User::create([
@@ -90,10 +93,9 @@ class AuthController extends Controller
                 'کاربر'=> $user
             ], 201);
 
-
         } catch (InvalidVerificationCodeException | UserAlreadyRegisteredException | PasswordMismatchException $exception) {
             DB::rollBack();
-            return response(['message' => $exception->getMessage()], 400);
+            return response(['message' => $exception->getMessage()], $exception->getCode());
         } catch (Exception $exception) {
             DB::rollBack();
             return response(['message' => 'خطایی به وجود آمده است'], 500);
@@ -139,16 +141,15 @@ class AuthController extends Controller
             $registerData = Cache::get('user-auth-verification-' . $value);
 
                 if ( !$registerData || $registerData['code'] != $code) {
-                    throw new InvalidVerificationCodeException('کد تایید نامعتبر است');
+                    throw new InvalidVerificationCodeException('کد تایید نامعتبر است',422);
                 }
 
                 $uesr = User::where($registerData['field'], $value)->first();
                 if (!$uesr) {
-                    throw new UserAlreadyRegisteredException('شما قبلا ثبت نام نکرده اید');
-                }
+                    return response()->json(['message' => 'کاربری با این مشخصات یافت نشد'], 404);                }
                     // بررسی معتبر بودن رمز عبور و تکرار آن
                 if ($password !== $passwordConfirmation) {
-                    throw new PasswordMismatchException('رمز عبور و تکرار آن باید یکسان باشند.');
+                    throw new PasswordMismatchException('رمز عبور و تکرار آن باید یکسان باشند.',422);
                 }
 
                 $uesr->password =bcrypt($password) ;
@@ -162,7 +163,7 @@ class AuthController extends Controller
 
         } catch (InvalidVerificationCodeException |UserAlreadyRegisteredException| PasswordMismatchException $exception) {
             DB::rollBack();
-            return response(['message' => $exception->getMessage()], 400);
+            return response(['message' => $exception->getMessage()], $exception->getCode());
         } catch (Exception $exception) {
             DB::rollBack();
             Log::error($exception);

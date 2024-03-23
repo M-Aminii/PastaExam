@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AccessTokenController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DescriptivQuestionController;
+use App\Http\Controllers\DescriptiveQuestionController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\MultipleChoiceQuestionController;
 use App\Http\Controllers\UserController;
@@ -58,7 +58,7 @@ Route::group(["middleware" => ["auth:api"]],function (){
 Route::group(["middleware" => ["auth:api"],'prefix' => 'exam'], function () {
 
     Route::post('/addExam',[ExamController::class ,'create']);
-    Route::post('/addTest',[ExamController::class ,'addQuestionsToExam']);
+    Route::post('/addQuestion',[ExamController::class ,'addQuestionsToExam']);
     Route::get('/showExam', [ExamController::class, 'showExamDetails']);
     Route::post('/WordDocument', [ExamController::class, 'generateWordDocument']);
 
@@ -83,8 +83,8 @@ Route::group(["middleware" => ["auth:api"],'prefix' => 'question'], function () 
  */
 Route::group(["middleware" => ["auth:api"],'prefix' => 'question'], function () {
 
-    Route::post('/descriptive',[DescriptivQuestionController::class ,'create']);
-    Route::get('/ListDescriptive',[DescriptivQuestionController::class ,'ListDescriptive']);
+    Route::post('/descriptive',[DescriptiveQuestionController::class ,'create']);
+    Route::get('/ListDescriptive',[DescriptiveQuestionController::class ,'ListDescriptive']);
 
 
 });

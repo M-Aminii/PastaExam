@@ -15,9 +15,17 @@ class ExamQuestions extends Model
 
     protected $fillable = [
         'exam_id',
-        'question_id',
+        'questions_data',
+    ];
+
+    protected $casts = [
+        'questions_data' => 'array',
     ];
 
 
+
     public $timestamps = true;
+
+
+
 }

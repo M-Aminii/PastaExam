@@ -6,26 +6,12 @@ use Exception;
 
 class UserAlreadyRegisteredException extends Exception
 {
-    /**
-     * Report the exception.
-     *
-     * @return void
-     */
-    public function report()
-    {
-        //
-    }
+    protected $statusCode = 409;
 
-    /**
-     * Render the exception as an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function render($request)
     {
         return response([
             'message' => $this->getMessage()
-        ], 400);
+        ], $this->statusCode);
     }
 }

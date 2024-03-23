@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('exam_questions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('exam_id');
-            $table->unsignedBigInteger('question_id');
+            $table->text('questions_data')->nullable();
             $table->timestamps();
 
             // Define foreign key constraints
@@ -20,10 +20,6 @@ return new class extends Migration
                 ->on('exams')
                 ->onDelete('cascade');
 
-            $table->foreign('question_id')
-                ->references('id')
-                ->on('multiple_choice_questions')
-                ->onDelete('cascade');
         });
     }
 

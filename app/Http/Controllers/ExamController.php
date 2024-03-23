@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\DTO\ExamDTO;
 use App\Events\ExamCreated;
+use App\Exceptions\NoActiveExamException;
+use App\Exceptions\NoQuestionInExamException;
 use App\Http\Requests\Exam\CreateExamRequest;
 use App\Http\Requests\Exam\ShowExamRequest;
+use App\Models\DescriptiveQuestions;
 use App\Models\Exam;
 use App\Models\ExamQuestions;
+use App\Models\MultipleChoiceQuestion;
 use App\Models\User;
 use App\Services\MultipleChoiceQuestionService;
 use Exception;
@@ -37,23 +41,107 @@ class ExamController extends Controller
             return response(['message' => 'خطایی رخ داده است'], 500);
         }
     }
+
     public function addQuestionsToExam(Request $request)
     {
-        $examId = $request->input('exam_id');
-        $questionIds = $request->input('question_ids');
+        try {
+            DB::beginTransaction();
+            $user = auth()->user();
 
-        foreach ($questionIds as $questionId) {
-            $newEntry = new ExamQuestions();
-            $newEntry->exam_id = $examId;
-            $newEntry->question_id = $questionId;
-            $newEntry->save();
+            $exam = $user->exams()->latest()->first();
+            if (!$exam) {
+                throw new NoActiveExamException('هیچ آزمون فعالی برای این کاربر وجود ندارد');
+            }
+            $questions = $request->input('questions');
+            if (!$questions){
+                throw new NoQuestionInExamException('هیچ سوالی به این آزمون اضافه نشده است');
+            }
+            $examQuestion = ExamQuestions::where('exam_id', $exam->id)->first();
+
+            if ($examQuestion) {
+                // اگر رکورد وجود داشت، فیلد سوالات را به‌روزرسانی کنید
+                $examQuestion->update(['questions_data' => $questions]);
+            } else {
+                // اگر رکورد وجود نداشت، یک رکورد جدید ایجاد کنید
+                ExamQuestions::create([
+                    'exam_id' => $exam->id,
+                    'questions_data' => $questions
+                ]);
+            }
+
+            DB::commit();
+            return response()->json(['message' => 'سوالات با موفقیت به آزمون اضافه شد'], 201);
+        } catch (NoActiveExamException | NoQuestionInExamException $exception) {
+            DB::rollBack();
+            return response(['message' => $exception->getMessage()], 400);
+        }catch (Exception $exception) {
+            DB::rollBack();
+            Log::error($exception);
+            return response(['message' => 'خطایی رخ داده است'], 500);
         }
-
-        return response()->json(['message' => 'سوالات با موفقیت به آزمون اضافه شد'], 200);
     }
+
+
+
     public function showExamDetails(ShowExamRequest $request)
     {
-        $user=$request->user();
+        $user = auth()->user();
+
+        $exam = $user->exams()->latest()->first();
+
+        if (!$exam) {
+            return response()->json([
+                'message' => 'هیچ آزمون فعالی برای این کاربر وجود ندارد',
+            ], 404);
+        }
+
+        //$questions = json_decode($exam->examQuestions->first()->questions_data, true);
+       $questions = $exam->examQuestions->first()->questions_data;
+
+
+        $allQuestions = []; // آرایه‌ای برای ذخیره تمامی سوالات
+
+        if ($questions) {
+            foreach ($questions as $question) {
+                $questionId = $question['id'];
+                $questionType = $question['type'];
+                if ($questionType === 'multiple_choice') {
+                    $result = MultipleChoiceQuestion::find($questionId);
+
+                    $questionForService = [
+                        'question_text' => $result->question_text,
+                        'option1' => $result->option1,
+                        'option2' => $result->option2,
+                        'option3' => $result->option3,
+                        'option4' => $result->option4,
+                        'correct_option' => $result->correct_option,
+                        'explanation'=>$result->explanation,
+                    ];
+
+                    $questionData = MultipleChoiceQuestionService::getRandomQuestions([$questionForService]);
+
+                } elseif ($questionType === 'descriptive') {
+                    $questionData = DescriptiveQuestions::select('question_text','answer','explanation',)->find($questionId);
+
+                }
+                $allQuestions[] = $questionData;
+            }
+
+            return response()->json([
+                'exam_title' => $exam->title,
+                'questions' => $allQuestions, // ارسال تمامی سوالات به عنوان یک آرایه
+            ], 201);
+        } else {
+            throw new NoQuestionInExamException('هیچ سوالی به این آزمون اضافه نشده است');
+
+        }
+    }
+
+
+
+
+
+    /*$user=$request->user();
 
         $exam = $user->exams()->with(['questions' => function ($query) {
             $query->select('question_text', 'option1', 'option2', 'option3', 'option4','correct_option','explanation');
@@ -65,8 +153,8 @@ class ExamController extends Controller
         return response()->json([
             'exam_title' => $exam->title,
             'questions' => $randomizedQuestions,
-        ], 201);
-    }
+        ], 201);*/
+
     public function generateWordDocument(Request $request)
     {
         try {

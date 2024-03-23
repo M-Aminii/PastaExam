@@ -44,13 +44,21 @@ class Exam extends Model
             'topic_id' => $this->topic_id,
         ];
     }
+
+
     public function questions()
     {
-        return $this->belongsToMany(MultipleChoiceQuestion::class, 'exam_questions', 'exam_id', 'question_id');
+        return $this->belongsToMany(MultipleChoiceQuestion::class, 'exam_questions', 'exam_id', 'questions_data');
     }
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    public function examQuestions()
+    {
+        return $this->hasMany(ExamQuestions::class, 'exam_id');
+    }
+
 
 }

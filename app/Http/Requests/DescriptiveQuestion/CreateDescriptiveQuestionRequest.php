@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\DescriptivQuestion;
+namespace App\Http\Requests\DescriptiveQuestion;
 
 use App\Models\Exam;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateDescriptivQuestionRequest extends FormRequest
+class CreateDescriptiveQuestionRequest extends FormRequest
 {
 
     public function authorize(): bool

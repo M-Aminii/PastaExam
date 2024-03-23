@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\DescriptivQuestions;
+use App\Models\DescriptiveQuestions;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('descriptiv_questions', function (Blueprint $table) {
+        Schema::create('descriptive_questions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('grade_level_id');
@@ -21,9 +21,9 @@ return new class extends Migration
             $table->unsignedBigInteger('textbook_id');
             $table->unsignedBigInteger('topic_id');
             $table->string('source')->nullable();
-            $table->enum('answer_type', DescriptivQuestions::Type);
-            $table->enum('direction', DescriptivQuestions::Direction)->nullable()->default(DescriptivQuestions::Direction_Right);
-            $table->enum('difficulty_level',DescriptivQuestions::LEVEL);// سطح سختی
+            $table->enum('answer_type', DescriptiveQuestions::Type);
+            $table->enum('direction', DescriptiveQuestions::Direction)->nullable()->default(DescriptiveQuestions::Direction_Right);
+            $table->enum('difficulty_level',DescriptiveQuestions::LEVEL);// سطح سختی
             $table->string('question_text');
             $table->string('answer');
             $table->string('explanation')->nullable();// توضیح جواب سوال
@@ -70,6 +70,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('descriptiv_questions');
+        Schema::dropIfExists('descriptive_questions');
     }
 };
