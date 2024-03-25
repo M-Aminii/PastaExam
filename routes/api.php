@@ -22,10 +22,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register',[AuthController::class ,'register']);
 Route::post('register-verify',[AuthController::class ,'registerVerify']);
-Route::post('resend-password-reset-code', [AuthController::class , 'resendPasswordResetCode']);
-Route::patch('reset-password',[AuthController::class ,'resetPassword']);
 Route::post('resend-verification-code',[AuthController::class ,'resendVerificationCodeToUser']);
 
+Route::post('send-password-reset-code', [AuthController::class , 'sendPasswordResetCode']);
+Route::patch('reset-password',[AuthController::class ,'confirmPasswordResetCode']);
+Route::post('resend-password-reset-code', [AuthController::class , 'resendPasswordResetCode']);
 
 
 Route::group(['prefix' => 'auth'], function () {

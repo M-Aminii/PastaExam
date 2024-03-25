@@ -99,6 +99,17 @@ return [
         ],
     ],
 
+    // تنظیمات به دقیقه هست
+   /* 'token_expiration' => [
+        'token' => env('EXPIRATION_TOKEN', 14400), // 10 * 24 * 60
+        'refresh_token' => env('EXPIRATION_REFRESH_TOKEN', 43200), // 30 * 24 * 60
+    ],*/
+
+    'register_cache_expiration' => env('EXPIRATION_TOKEN',180),
+    'register_cache_expiration_refresh' => env('EXPIRATION_REFRESH_TOKEN',120),
+    'change_password_cache_expiration' => env('EXPIRATION_CHANGE_PASSWORD',60),
+    'change_password_cache_expiration_refresh' => env('EXPIRATION_REFRESH_CHANGE_PASSWORD',120),
+
     /*
     |--------------------------------------------------------------------------
     | Password Confirmation Timeout
