@@ -68,7 +68,6 @@ class ExamController extends Controller
                     'questions_data' => $questions
                 ]);
             }
-
             DB::commit();
             return response()->json(['message' => 'سوالات با موفقیت به آزمون اضافه شد'], 201);
         } catch (NoActiveExamException | NoQuestionInExamException $exception) {
@@ -86,7 +85,6 @@ class ExamController extends Controller
     public function showExamDetails(ShowExamRequest $request)
     {
         $user = auth()->user();
-
         $exam = $user->exams()->latest()->first();
 
         if (!$exam) {
@@ -138,6 +136,26 @@ class ExamController extends Controller
     }
 
 
+    public static function delete(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $user = $request->user();
+            $exam = $user->exams()->latest()->first();
+            if (!$exam) {
+                throw new NoActiveExamException('هیچ آزمون فعالی برای این کاربر وجود ندارد');
+            }
+            $exam->Delete();
+            DB::commit();
+            return response(['message' => 'حذف با موفقیت انجام شد'], 200);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            Log::error($exception);
+            return response(['message' => 'حذف انجام نشد'], 500);
+
+        }
+
+    }
 
 
 

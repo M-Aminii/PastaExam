@@ -48,7 +48,6 @@ Route::group(["middleware" => ["auth:api"]],function (){
     Route::group(['prefix' => 'user'], function () {
 
         Route::post('/profile',[UserController::class ,'profile']);
-
     });
 
 });
@@ -58,14 +57,11 @@ Route::group(["middleware" => ["auth:api"]],function (){
  */
 Route::group(["middleware" => ["auth:api"],'prefix' => 'exam'], function () {
 
-    Route::post('/addExam',[ExamController::class ,'create']);
+    Route::post('/',[ExamController::class ,'create']);
+    Route::delete('/',[ExamController::class ,'delete']);
     Route::post('/addQuestion',[ExamController::class ,'addQuestionsToExam']);
     Route::get('/showExam', [ExamController::class, 'showExamDetails']);
     Route::post('/WordDocument', [ExamController::class, 'generateWordDocument']);
-
-    Route::put('change-password',[UserController::class ,'changePassword']);
-
-
 
 });
 
@@ -79,6 +75,7 @@ Route::group(["middleware" => ["auth:api"],'prefix' => 'question'], function () 
 
 
 });
+
 /**
  * روت های سوالات تشریحی
  */

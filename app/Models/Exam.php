@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ExamDeleted;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -58,6 +59,14 @@ class Exam extends Model
     public function examQuestions()
     {
         return $this->hasMany(ExamQuestions::class, 'exam_id');
+    }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleted(function ($exam) {
+            event(new ExamDeleted($exam));
+        });
     }
 
 
