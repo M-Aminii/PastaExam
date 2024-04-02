@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Requests\Exam;
+namespace App\Http\Requests\Questions;
 
-use App\Models\Exam;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
-class ShowExamRequest extends FormRequest
+class AddQuestionsToExam extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return  true;
+       return true;
     }
 
     /**
@@ -23,7 +23,7 @@ class ShowExamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'questions'=> 'required|Array',
         ];
     }
 }

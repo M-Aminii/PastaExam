@@ -2,7 +2,8 @@
 
 namespace App\Events;
 
-use App\Models\Exam;
+use App\Http\Controllers\ExamHeaderController;
+use App\Models\ExamHeader;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -17,7 +18,7 @@ class ExamDeleted
 
     public $exam;
 
-    public function __construct(Exam $exam)
+    public function __construct(ExamHeader $exam)
     {
         $this->exam = $exam;
     }

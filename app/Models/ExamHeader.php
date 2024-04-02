@@ -6,9 +6,11 @@ use App\Events\ExamDeleted;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Exam extends Model
+class ExamHeader extends Model
 {
     use HasFactory;
+
+    protected $table = 'exam_headers';
 
     const LEVEL_EASY = 'easy ';
     const LEVEL_MEDIUM = 'medium';
@@ -58,7 +60,7 @@ class Exam extends Model
 
     public function examQuestions()
     {
-        return $this->hasMany(ExamQuestions::class, 'exam_id');
+        return $this->hasMany(Questions::class, 'exam_id');
     }
     protected static function boot()
     {

@@ -5,6 +5,7 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 use App\Policies\ExamPolicy;
 use App\Policies\MultipleChoiceQuestionPolicy;
+use App\Policies\QuestionPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -25,7 +26,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
-       // Gate::define('ShowExamDetails', [ExamPolicy::class, 'ShowExamDetails']);
+        //Gate::define('exist-questions', [QuestionPolicy::class, 'existQuestions']);
         //$this->registerGates();
     }
 

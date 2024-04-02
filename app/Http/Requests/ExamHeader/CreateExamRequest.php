@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Exam;
+namespace App\Http\Requests\ExamHeader;
 
 use App\Http\Middleware\TrimStrings;
 use Illuminate\Foundation\Http\FormRequest;

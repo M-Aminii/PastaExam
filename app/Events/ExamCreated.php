@@ -2,7 +2,8 @@
 
 namespace App\Events;
 
-use App\Models\Exam;
+
+use App\Models\ExamHeader;
 use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -18,7 +19,7 @@ class ExamCreated
 
     public $exam;
 
-    public function __construct(Exam $exam)
+    public function __construct(ExamHeader $exam)
     {
         $this->exam = $exam;
     }

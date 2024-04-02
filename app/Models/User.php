@@ -74,7 +74,7 @@ class User extends Authenticatable implements JWTSubject
     }
     public function exams()
     {
-        return $this->hasMany(Exam::class);
+        return $this->hasMany(ExamHeader::class);
     }
 
     public function gradeLevel()

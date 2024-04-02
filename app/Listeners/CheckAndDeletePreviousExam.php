@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\ExamCreated;
-use App\Models\Exam;
+use App\Models\ExamHeader;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -25,7 +25,7 @@ class CheckAndDeletePreviousExam
 
         $user_id = $event->exam->user_id;
         // بررسی وجود امتحان قبلی
-        $previousExam = Exam::where('user_id', $user_id)->first();
+        $previousExam = ExamHeader::where('user_id', $user_id)->first();
 //dd($event->exam->id);
         // اگر کاربر قبلاً امتحان ایجاد کرده باشد، امتحان جدید را حذف کنید
         if ($previousExam && $previousExam->id !== $event->exam->id) {

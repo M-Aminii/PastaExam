@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('exam_questions', function (Blueprint $table) {
+        Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('exam_id');
             $table->text('questions_data')->nullable();
@@ -17,7 +17,7 @@ return new class extends Migration
             // Define foreign key constraints
             $table->foreign('exam_id')
                 ->references('id')
-                ->on('exams')
+                ->on('exam_headers')
                 ->onDelete('cascade');
 
         });
@@ -25,6 +25,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('exam_questions');
+        Schema::dropIfExists('questions');
     }
 };

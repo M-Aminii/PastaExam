@@ -3,8 +3,9 @@
 use App\Http\Controllers\AccessTokenController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DescriptiveQuestionController;
-use App\Http\Controllers\ExamController;
+use App\Http\Controllers\ExamHeaderController;
 use App\Http\Controllers\MultipleChoiceQuestionController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -44,7 +45,6 @@ Route::group(["middleware" => ["auth:api"]],function (){
 
     Route::put('change-password',[UserController::class ,'changePassword']);
 
-
     Route::group(['prefix' => 'user'], function () {
 
         Route::post('/profile',[UserController::class ,'profile']);
@@ -56,14 +56,20 @@ Route::group(["middleware" => ["auth:api"]],function (){
  * روت های سربرگ آزمون
  */
 Route::group(["middleware" => ["auth:api"],'prefix' => 'exam'], function () {
-
-    Route::post('/',[ExamController::class ,'create']);
-    Route::delete('/',[ExamController::class ,'delete']);
-    Route::post('/addQuestion',[ExamController::class ,'addQuestionsToExam']);
-    Route::get('/showExam', [ExamController::class, 'showExamDetails']);
-    Route::post('/WordDocument', [ExamController::class, 'generateWordDocument']);
+    Route::post('/',[ExamHeaderController::class ,'create']);
+    Route::delete('/',[ExamHeaderController::class ,'delete']);
+    Route::post('/WordDocument', [ExamHeaderController::class, 'generateWordDocument']);
+});
+/**
+ * روت های سوالات آزمون
+ */
+Route::group(["middleware" => ["auth:api"],'prefix' => 'exam'], function () {
+    Route::post('/addQuestion',[QuestionController::class ,'addQuestionsToExam']);
+    Route::get('/showQuestion', [QuestionController::class, 'showExamDetails']);
 
 });
+
+
 
 /**
  * روت های سوالات 4 گزینه ای

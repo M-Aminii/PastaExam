@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Exam;
+use App\Models\ExamHeader;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exams', function (Blueprint $table) {
+        Schema::create('exam_headers', function (Blueprint $table) {
             $table->bigIncrements('id');
 
             $table->unsignedBigInteger('user_id');
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->dateTime('date_time')->nullable(); // زمان برگزاری
 
 
-            $table->enum('difficulty_level',Exam::LEVEL);// سطح سختی
+            $table->enum('difficulty_level',ExamHeader::LEVEL);// سطح سختی
 
             $table->integer('duration_minutes'); // مدت آزمون به دقیقه
             $table->enum('exam_type', ['test', 'Descriptive']); // نوع آزمون
@@ -92,6 +92,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('exam_headers');
     }
 };
