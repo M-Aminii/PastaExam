@@ -20,9 +20,9 @@ class DescriptiveQuestions extends Model
     const Direction = [self::Direction_Right,self::Direction_Left];
 
     const Short_Answer = 'short';
-    const Full_Answer = 'full';
+    const Long_Answer = 'long';
 
-    const Type = [self::Short_Answer,self::Full_Answer];
+    const Type = [self::Short_Answer,self::Long_Answer];
 
     protected $fillable = [
         'user_id',
@@ -51,5 +51,10 @@ class DescriptiveQuestions extends Model
     public function topic()
     {
         return $this->belongsTo(Topic::class);
+    }
+
+    public function isCreatedBy(User $user)
+    {
+        return $this->user_id === $user->id;
     }
 }

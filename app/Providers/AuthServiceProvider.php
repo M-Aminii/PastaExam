@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Models\MultipleChoiceQuestion;
+use App\Models\User;
+use App\Policies\DescriptiveQuestionPolicy;
 use App\Policies\ExamPolicy;
 use App\Policies\MultipleChoiceQuestionPolicy;
 use App\Policies\QuestionPolicy;
@@ -17,7 +20,10 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        //
+       // User::class => UserPolicy::class,
+
+        //MultipleChoiceQuestion::class => MultipleChoiceQuestionPolicy::class,
+
     ];
 
     /**
@@ -25,8 +31,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-        //Gate::define('exist-questions', [QuestionPolicy::class, 'existQuestions']);
+        //$this->registerPolicies();
+        Gate::define('delete-Multiple-Choice', [MultipleChoiceQuestionPolicy::class, 'delete']);
+        Gate::define('delete-Descriptive', [DescriptiveQuestionPolicy::class, 'delete']);
         //$this->registerGates();
     }
 

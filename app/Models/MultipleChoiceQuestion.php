@@ -51,6 +51,11 @@ class MultipleChoiceQuestion extends Model
         return $this->belongsTo(Topic::class);
     }
 
+    public function isCreatedBy(User $user)
+    {
+        return $this->user_id === $user->id;
+    }
+
 
 
 

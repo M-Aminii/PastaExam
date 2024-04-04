@@ -6,6 +6,7 @@ use App\DTO\DescriptivQuestionDTO;
 use App\DTO\QuestionDTO;
 
 use App\Http\Requests\DescriptiveQuestion\CreateDescriptiveQuestionRequest;
+use App\Http\Requests\DescriptiveQuestion\DeleteDescriptiveRequest;
 use App\Models\DescriptiveQuestions;
 use App\Models\Exam;
 use App\Models\MultipleChoiceQuestion;
@@ -51,6 +52,20 @@ class DescriptiveQuestionController extends Controller
 
         return response()->json($randomizedQuestions,);
 
+    }
+
+    public static function delete(DeleteDescriptiveRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            DescriptiveQuestions::destroy($request->question);
+            DB::commit();
+            return response(['message' => 'حذف سوال با موفقیت انجام شد'], 200);
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error($exception);
+            return response(['message' => 'حذف سوال با شکست مواجه شد'], 500);
+        }
     }
 
 }

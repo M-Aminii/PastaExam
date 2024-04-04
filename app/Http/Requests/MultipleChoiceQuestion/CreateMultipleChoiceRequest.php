@@ -6,7 +6,7 @@ use App\Models\Exam;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateQuestionRequest extends FormRequest
+class CreateMultipleChoiceRequest extends FormRequest
 {
 
     public function authorize(): bool

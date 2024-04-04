@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\DTO\QuestionDTO;
-use App\Http\Requests\MultipleChoiceQuestion\CreateQuestionRequest;
+use App\Http\Requests\MultipleChoiceQuestion\CreateMultipleChoiceRequest;
+use App\Http\Requests\MultipleChoiceQuestion\DeleteMultipleChoiceRequest;
 use App\Models\Exam;
 use App\Models\MultipleChoiceQuestion;
 use App\Services\MultipleChoiceQuestionService;
@@ -15,14 +16,14 @@ use Illuminate\Support\Facades\Log;
 class MultipleChoiceQuestionController extends Controller
 {
 
-    public function create(CreateQuestionRequest $request)
+    public function create(CreateMultipleChoiceRequest $request)
     {
 
         try {
             DB::beginTransaction();
             $questionDTO = new QuestionDTO($request->validated());
             $questionDTO->convertCorrectOption();
-            $question = MultipleChoiceQuestion::create((array) $questionDTO);
+            MultipleChoiceQuestion::create((array) $questionDTO);
             DB::commit();
             return response()->json(['message' => 'سوال با موفقیت اضافه شد'], 201);
         } catch (Exception $exception) {
@@ -46,6 +47,20 @@ class MultipleChoiceQuestionController extends Controller
 
         return response()->json($randomizedQuestions,);
 
+    }
+
+    public static function delete(DeleteMultipleChoiceRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            MultipleChoiceQuestion::destroy($request->question);
+            DB::commit();
+            return response(['message' => 'حذف سوال با موفقیت انجام شد'], 200);
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error($exception);
+            return response(['message' => 'حذف سوال با شکست مواجه شد'], 500);
+        }
     }
 
 }

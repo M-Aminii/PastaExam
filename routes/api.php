@@ -77,7 +77,8 @@ Route::group(["middleware" => ["auth:api"],'prefix' => 'exam'], function () {
 Route::group(["middleware" => ["auth:api"],'prefix' => 'question'], function () {
 
     Route::post('/multiple-choice',[MultipleChoiceQuestionController::class ,'create']);
-    Route::get('/ListTest',[MultipleChoiceQuestionController::class ,'listMultipleChoice']);
+    Route::get('/multiple-choice',[MultipleChoiceQuestionController::class ,'listMultipleChoice']);
+    Route::delete('/multiple-choice/{question}',[MultipleChoiceQuestionController::class ,'delete']);
 
 
 });
@@ -88,7 +89,8 @@ Route::group(["middleware" => ["auth:api"],'prefix' => 'question'], function () 
 Route::group(["middleware" => ["auth:api"],'prefix' => 'question'], function () {
 
     Route::post('/descriptive',[DescriptiveQuestionController::class ,'create']);
-    Route::get('/ListDescriptive',[DescriptiveQuestionController::class ,'ListDescriptive']);
+    Route::get('/descriptive',[DescriptiveQuestionController::class ,'ListDescriptive']);
+    Route::delete('/descriptive/{question}',[DescriptiveQuestionController::class ,'delete']);
 
 
 });
