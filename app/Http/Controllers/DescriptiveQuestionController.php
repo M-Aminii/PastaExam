@@ -7,6 +7,7 @@ use App\DTO\QuestionDTO;
 
 use App\Http\Requests\DescriptiveQuestion\CreateDescriptiveQuestionRequest;
 use App\Http\Requests\DescriptiveQuestion\DeleteDescriptiveRequest;
+use App\Http\Requests\DescriptiveQuestion\updateDescriptiveRequest;
 use App\Models\DescriptiveQuestions;
 use App\Models\Exam;
 use App\Models\MultipleChoiceQuestion;
@@ -26,7 +27,7 @@ class DescriptiveQuestionController extends Controller
         try {
             DB::beginTransaction();
             $questionDTO = new DescriptivQuestionDTO($request->validated());
-            $question = DescriptiveQuestions::create((array) $questionDTO);
+            DescriptiveQuestions::create((array) $questionDTO);
             DB::commit();
             return response()->json(['message' => 'سوال با موفقیت اضافه شد'], 201);
         } catch (Exception $exception) {
@@ -60,11 +61,28 @@ class DescriptiveQuestionController extends Controller
             DB::beginTransaction();
             DescriptiveQuestions::destroy($request->question);
             DB::commit();
-            return response(['message' => 'حذف سوال با موفقیت انجام شد'], 200);
+            return response(['message' => 'سوال مورد نظر با موفقیت حذف شد'], 200);
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error($exception);
             return response(['message' => 'حذف سوال با شکست مواجه شد'], 500);
+        }
+    }
+    public function update(updateDescriptiveRequest $request)
+    {
+
+        try {
+            DB::beginTransaction();
+            $questionId = $request->question;
+            $question = DescriptiveQuestions::findOrFail($questionId);
+            $questionDTO = new DescriptivQuestionDTO($request->validated());
+            $question->update((array) $questionDTO);
+            DB::commit();
+            return response()->json(['message' => 'سوال با موفقیت بروزرسانی شد'], 201);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            Log::error($exception);
+            return response(['message' => 'خطایی رخ داده است'], 500);
         }
     }
 

@@ -19,4 +19,13 @@ class MultipleChoiceQuestionPolicy
             return true;
         }
     }
+    public function update(User $user,MultipleChoiceQuestion $question)
+    {
+        if (!$question->isCreatedBy($user)) {
+            throw new AuthorizationException;
+        }else{
+            return true;
+        }
+    }
+
 }

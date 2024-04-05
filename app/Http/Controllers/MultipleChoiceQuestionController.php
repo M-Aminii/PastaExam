@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DTO\QuestionDTO;
 use App\Http\Requests\MultipleChoiceQuestion\CreateMultipleChoiceRequest;
 use App\Http\Requests\MultipleChoiceQuestion\DeleteMultipleChoiceRequest;
+use App\Http\Requests\MultipleChoiceQuestion\updateMultipleChoiceRequest;
 use App\Models\Exam;
 use App\Models\MultipleChoiceQuestion;
 use App\Services\MultipleChoiceQuestionService;
@@ -43,9 +44,10 @@ class MultipleChoiceQuestionController extends Controller
             ->inRandomOrder()
             ->get();
 
+
         $randomizedQuestions = MultipleChoiceQuestionService::getRandomQuestions($questions);
 
-        return response()->json($randomizedQuestions,);
+        return response()->json($randomizedQuestions);
 
     }
 
@@ -55,11 +57,30 @@ class MultipleChoiceQuestionController extends Controller
             DB::beginTransaction();
             MultipleChoiceQuestion::destroy($request->question);
             DB::commit();
-            return response(['message' => 'حذف سوال با موفقیت انجام شد'], 200);
+            return response(['message' => 'سوال مورد نظر با موفقیت حذف شد'], 200);
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error($exception);
             return response(['message' => 'حذف سوال با شکست مواجه شد'], 500);
+        }
+    }
+
+    public function update(updateMultipleChoiceRequest $request)
+    {
+
+        try {
+            DB::beginTransaction();
+            $questionId = $request->question;
+            $question = MultipleChoiceQuestion::findOrFail($questionId);
+            $questionDTO = new QuestionDTO($request->validated());
+            $questionDTO->convertCorrectOption();
+            $question->update((array) $questionDTO);
+            DB::commit();
+            return response()->json(['message' => 'سوال با موفقیت بروزرسانی شد'], 201);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            Log::error($exception);
+            return response(['message' => 'خطایی رخ داده است'], 500);
         }
     }
 

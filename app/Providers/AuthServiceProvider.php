@@ -33,7 +33,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         //$this->registerPolicies();
         Gate::define('delete-Multiple-Choice', [MultipleChoiceQuestionPolicy::class, 'delete']);
+        Gate::define('update-Multiple-Choice', [MultipleChoiceQuestionPolicy::class, 'update']);
         Gate::define('delete-Descriptive', [DescriptiveQuestionPolicy::class, 'delete']);
+        Gate::define('update-Descriptive', [DescriptiveQuestionPolicy::class, 'update']);
         //$this->registerGates();
     }
 

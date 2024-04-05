@@ -79,6 +79,7 @@ Route::group(["middleware" => ["auth:api"],'prefix' => 'question'], function () 
     Route::post('/multiple-choice',[MultipleChoiceQuestionController::class ,'create']);
     Route::get('/multiple-choice',[MultipleChoiceQuestionController::class ,'listMultipleChoice']);
     Route::delete('/multiple-choice/{question}',[MultipleChoiceQuestionController::class ,'delete']);
+    Route::put('/multiple-choice/{question}',[MultipleChoiceQuestionController::class ,'update']);
 
 
 });
@@ -91,6 +92,7 @@ Route::group(["middleware" => ["auth:api"],'prefix' => 'question'], function () 
     Route::post('/descriptive',[DescriptiveQuestionController::class ,'create']);
     Route::get('/descriptive',[DescriptiveQuestionController::class ,'ListDescriptive']);
     Route::delete('/descriptive/{question}',[DescriptiveQuestionController::class ,'delete']);
+    Route::put('/descriptive/{question}',[DescriptiveQuestionController::class ,'update']);
 
 
 });

@@ -20,4 +20,12 @@ class DescriptiveQuestionPolicy
             return true;
         }
     }
+    public function update(User $user,DescriptiveQuestions $question)
+    {
+        if (!$question->isCreatedBy($user)) {
+            throw new AuthorizationException;
+        }else{
+            return true;
+        }
+    }
 }

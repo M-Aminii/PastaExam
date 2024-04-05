@@ -12,7 +12,7 @@ class AuthorizationException extends Exception
      *
      * @param  string  $message
      */
-    public function __construct($message = 'شما مجاز به حذف این سوال نیستید.')
+    public function __construct($message = 'شما مجاز به این کار نیستید.')
     {
         parent::__construct($message, Response::HTTP_FORBIDDEN);
     }

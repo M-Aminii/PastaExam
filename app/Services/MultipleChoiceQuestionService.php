@@ -30,7 +30,7 @@ class MultipleChoiceQuestionService
             ];
         }
 
-        return reset($randomizedQuestions);
+        return $randomizedQuestions;
 
     }
 }
