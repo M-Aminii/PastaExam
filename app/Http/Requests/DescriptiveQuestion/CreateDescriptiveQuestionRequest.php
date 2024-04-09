@@ -24,7 +24,7 @@ class CreateDescriptiveQuestionRequest extends FormRequest
             'textbook_id'=>'required|exists:textbooks,id',
             'topic_id'=>'required|exists:topics,id',
             'source'=>'nullable|string',
-            'answer_type'=>'required|in:short,full',
+            'answer_type'=>'required|in:short,long',
             'direction'=>'nullable',
             'difficulty_level'=>'required',
             'question_text' => 'required|string',

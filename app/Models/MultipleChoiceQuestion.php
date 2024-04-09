@@ -14,10 +14,16 @@ class MultipleChoiceQuestion extends Model
     const LEVEL_HARD = 'hard ';
     const LEVEL = [self::LEVEL_EASY,self::LEVEL_MEDIUM, self::LEVEL_HARD];
 
-    const Direction_Right = 'Right to Left';
-    const Direction_Left = 'Left to Right ';
+    const Direction_Right = 'RTL';
+    const Direction_Left = 'LTR';
 
     const Direction = [self::Direction_Right,self::Direction_Left];
+
+    const Two_Options = 'TwoOptions';
+    const Four_Options = 'FourOptions';
+    const Five_Options = 'FiveOptions';
+
+    const Type = [self::Two_Options,self::Four_Options,self::Five_Options];
 
     protected $fillable = [
         'user_id',
@@ -27,6 +33,7 @@ class MultipleChoiceQuestion extends Model
         'textbook_id',
         'topic_id',
         'source',
+        'question_type',
         'direction',
         'difficulty_level',
         'question_text',
@@ -34,6 +41,7 @@ class MultipleChoiceQuestion extends Model
         'option2',
         'option3',
         'option4',
+        'option5',
         'correct_option',
         'explanation',
         'created_at',

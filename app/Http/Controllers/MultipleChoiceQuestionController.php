@@ -23,6 +23,12 @@ class MultipleChoiceQuestionController extends Controller
         try {
             DB::beginTransaction();
             $questionDTO = new QuestionDTO($request->validated());
+
+            // بررسی تایپ سوال بر اساس تعداد گزینه‌ها با استفاده از سرویس
+            if (!MultipleChoiceQuestionService::validateQuestionType($request)) {
+                return response()->json(['error' => 'تایپ سوال انتخابی شما با تعداد گزینه ها همخوانی ندارد.'], 422);
+            }
+
             $questionDTO->convertCorrectOption();
             MultipleChoiceQuestion::create((array) $questionDTO);
             DB::commit();
@@ -41,6 +47,7 @@ class MultipleChoiceQuestionController extends Controller
             ->where('textbook_id', $request->input('textbook_id', 1))
             ->where('topic_id', $request->input('topic_id', 1))
             ->where('difficulty_level', $request->input('difficulty_level', 'medium'))
+            ->where('question_type', $request->input('question_type'))
             ->inRandomOrder()
             ->get();
 
@@ -73,6 +80,10 @@ class MultipleChoiceQuestionController extends Controller
             $questionId = $request->question;
             $question = MultipleChoiceQuestion::findOrFail($questionId);
             $questionDTO = new QuestionDTO($request->validated());
+            // بررسی تایپ سوال بر اساس تعداد گزینه‌ها با استفاده از سرویس
+            if (!MultipleChoiceQuestionService::validateQuestionType($request)) {
+                return response()->json(['error' => 'تایپ سوال انتخابی شما با تعداد گزینه ها همخوانی ندارد.'], 422);
+            }
             $questionDTO->convertCorrectOption();
             $question->update((array) $questionDTO);
             DB::commit();

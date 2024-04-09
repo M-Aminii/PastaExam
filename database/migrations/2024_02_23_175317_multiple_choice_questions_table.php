@@ -21,13 +21,15 @@ return new class extends Migration
             $table->unsignedBigInteger('textbook_id');
             $table->unsignedBigInteger('topic_id');
             $table->string('source')->nullable();
+            $table->enum('question_type', MultipleChoiceQuestion::Type);
             $table->enum('direction', MultipleChoiceQuestion::Direction)->nullable()->default(MultipleChoiceQuestion::Direction_Right);
             $table->enum('difficulty_level',MultipleChoiceQuestion::LEVEL);// سطح سختی
             $table->string('question_text');
             $table->string('option1');
             $table->string('option2');
-            $table->string('option3');
-            $table->string('option4');
+            $table->string('option3')->nullable();
+            $table->string('option4')->nullable();
+            $table->string('option5')->nullable();
             $table->string('correct_option');
             $table->string('explanation')->nullable();
             $table->timestamp('created_at')->useCurrent();
