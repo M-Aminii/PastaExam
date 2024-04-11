@@ -2,6 +2,8 @@
 
 namespace App\DTO;
 
+use App\Models\MultipleChoiceQuestion;
+
 class QuestionDTO
 {
     public $user_id;
@@ -35,7 +37,7 @@ class QuestionDTO
         $this->topic_id = $data['topic_id'];
         $this->source =$data['source'];
         $this->question_type =$data['question_type'];
-        $this->direction = $data['direction'];
+        $this->direction = $data['direction'] ?? MultipleChoiceQuestion::Direction_Right;
         $this->difficulty_level = $data['difficulty_level'];
         $this->question_text = $data['question_text'];
         $this->option1 = $data['option1'];

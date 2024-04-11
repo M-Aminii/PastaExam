@@ -6,7 +6,6 @@ use App\DTO\QuestionDTO;
 use App\Http\Requests\MultipleChoiceQuestion\CreateMultipleChoiceRequest;
 use App\Http\Requests\MultipleChoiceQuestion\DeleteMultipleChoiceRequest;
 use App\Http\Requests\MultipleChoiceQuestion\updateMultipleChoiceRequest;
-use App\Models\Exam;
 use App\Models\MultipleChoiceQuestion;
 use App\Services\MultipleChoiceQuestionService;
 use Exception;
@@ -23,12 +22,10 @@ class MultipleChoiceQuestionController extends Controller
         try {
             DB::beginTransaction();
             $questionDTO = new QuestionDTO($request->validated());
-
             // بررسی تایپ سوال بر اساس تعداد گزینه‌ها با استفاده از سرویس
             if (!MultipleChoiceQuestionService::validateQuestionType($request)) {
                 return response()->json(['error' => 'تایپ سوال انتخابی شما با تعداد گزینه ها همخوانی ندارد.'], 422);
             }
-
             $questionDTO->convertCorrectOption();
             MultipleChoiceQuestion::create((array) $questionDTO);
             DB::commit();
@@ -47,7 +44,7 @@ class MultipleChoiceQuestionController extends Controller
             ->where('textbook_id', $request->input('textbook_id', 1))
             ->where('topic_id', $request->input('topic_id', 1))
             ->where('difficulty_level', $request->input('difficulty_level', 'medium'))
-            ->where('question_type', $request->input('question_type'))
+            ->where('question_type', $request->input('question_type',MultipleChoiceQuestion::Four_Options))
             ->inRandomOrder()
             ->get();
 

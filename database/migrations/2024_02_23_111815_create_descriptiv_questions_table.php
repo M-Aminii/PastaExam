@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('topic_id');
             $table->string('source')->nullable();
             $table->enum('answer_type', DescriptiveQuestions::Type);
-            $table->enum('direction', DescriptiveQuestions::Direction)->nullable()->default(DescriptiveQuestions::Direction_Right);
+            $table->enum('direction', DescriptiveQuestions::Direction)->default(DescriptiveQuestions::Direction_Right);
             $table->enum('difficulty_level',DescriptiveQuestions::LEVEL);// سطح سختی
             $table->string('question_text');
             $table->string('answer');

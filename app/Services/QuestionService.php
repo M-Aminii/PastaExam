@@ -27,14 +27,15 @@ class QuestionService
                             'question_text' => $result->question_text,
                             'option1' => $result->option1,
                             'option2' => $result->option2,
-                            'option3' => $result->option3,
-                            'option4' => $result->option4,
+                            'option3' => $result->option3 ?? null,
+                            'option4' => $result->option4 ?? null,
+                            'option5' => $result->option5 ?? null,
                             'correct_option' => $result->correct_option,
                             'explanation' => $result->explanation,
                         ];
 
                         $questionData = MultipleChoiceQuestionService::getRandomQuestions([$questionForService]);
-                        $allQuestions[] = $questionData;
+                        $allQuestions[] = reset($questionData);
                     }
 
                 } elseif ($questionType === 'descriptive') {

@@ -2,6 +2,8 @@
 
 namespace App\DTO;
 
+use App\Models\DescriptiveQuestions;
+
 class DescriptivQuestionDTO
 {
     public $user_id;
@@ -30,7 +32,7 @@ class DescriptivQuestionDTO
         $this->topic_id = $data['topic_id'];
         $this->source =$data['source'];
         $this->answer_type = $data['answer_type'];
-        $this->direction = $data['direction'];
+        $this->direction = $data['direction'] ?? DescriptiveQuestions::Direction_Right;
         $this->difficulty_level = $data['difficulty_level'];
         $this->question_text = $data['question_text'];
         $this->answer = $data['answer'];

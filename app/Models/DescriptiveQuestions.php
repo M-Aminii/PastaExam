@@ -14,8 +14,8 @@ class DescriptiveQuestions extends Model
     const LEVEL_HARD = 'hard ';
     const LEVEL = [self::LEVEL_EASY,self::LEVEL_MEDIUM, self::LEVEL_HARD];
 
-    const Direction_Right = 'Right to Left';
-    const Direction_Left = 'Left to Right ';
+    const Direction_Right = 'RTL';
+    const Direction_Left = 'LTR ';
 
     const Direction = [self::Direction_Right,self::Direction_Left];
 
