@@ -13,7 +13,7 @@ class DescriptiveQuestionService
         foreach ($questions as $question) {
 
             $randomizedQuestions[] = [
-                //'question_id' => $question->id,
+                'question_id' => $question->id,
                 'difficulty_level' => $question->difficulty_level,
                 'question_text' => $question->question_text,
                 'answer_type' => $question->answer_type,
